@@ -1,6 +1,30 @@
 import React from 'react';
 import { client, hostedFields } from 'braintree-web';
 import fetch from 'isomorphic-unfetch';
+import PaymentForm from '../components/PaymentForm';
+import styled, { hydrate, keyframes, css, injectGlobal } from 'react-emotion';
+
+injectGlobal`
+  html, body {
+    padding: 0;
+    margin: 0;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 24px;
+  }
+  * {
+   box-sizing: border-box;
+  }
+`
+
+const container = css`
+	max-width: 800px;
+	margin: 0 auto;
+`
+
+const h1 = css`
+	color: #353535;
+	font-size: 24px;
+`
 
 class IndexComponent extends React.Component {
 	braintreeClient;
@@ -8,9 +32,9 @@ class IndexComponent extends React.Component {
 
 	fieldTextStyles = {
 		'input': {
-			'font-family': 'monospace',
-			'font-size': '20px',
-			'color': 'blue'
+			'font-family': 'Helvetica',
+			'font-size': '16px',
+			'color': '#353535'
 		}
 	};
 	fields = {
@@ -35,7 +59,7 @@ class IndexComponent extends React.Component {
 		for (var i = 0; i < placeholderInputs.length; i++) {
 			placeholderInputs[i].parentNode.removeChild(placeholderInputs[i]);
 		}
-		
+
 		submit.removeAttribute('disabled');
 		this.fieldsInstance = instance;
 	}
@@ -95,24 +119,9 @@ class IndexComponent extends React.Component {
 
 	render() {
 		return (
-			<div>
-				<h1>Payment!</h1>
-
-			    <form id="my-sample-form" onSubmit={this.submitCardDetails}>
-			    	<label htmlFor="card-number">Card Number</label>
-			    	<div id="card-number">
-			      		<input className="placeholder" type="text" disabled />
-			      	</div>
-
-					<label htmlFor="cvv">CVV</label>
-					<div id="cvv"><input className="placeholder" disabled /></div>
-
-					<label htmlFor="expiration-date">Expiration Date</label>
-					<div id="expiration-date" className="hosted-field"></div>	
-
-					<button id="submitButton" disabled>Pay</button>
-			    </form>
-
+			<div className={container}>
+				<h1 className={h1}>Payment</h1>
+				<PaymentForm onSubmit={this.submitCardDetails} />
 			</div>
 		);
 	}

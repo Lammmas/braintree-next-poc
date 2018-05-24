@@ -9,17 +9,6 @@ if (typeof window !== 'undefined') {
     hydrate(window.__NEXT_DATA__.ids)
   }
 
-injectGlobal`
-  html, body {
-    padding: 3rem 1rem;
-    margin: 0;
-    background: papayawhip;
-    min-height: 100%;
-    font-family: Helvetica, Arial, sans-serif;
-    font-size: 24px;
-  }
-`
-
 const basicStyles = css`
   background-color: white;
   color: cornflowerblue;
