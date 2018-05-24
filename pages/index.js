@@ -1,5 +1,6 @@
 import React from 'react';
 import { client, hostedFields } from 'braintree-web';
+import fetch from 'isomorphic-unfetch';
 
 class IndexComponent extends React.Component {
 	braintreeClient;
