@@ -46,8 +46,8 @@ class IndexComponent extends React.Component {
 	}
 
 	submitCardDetails = (e) => {
-		console.log('submitCardDetails', this.fieldsInstance);
 		e.preventDefault();
+
 		this.fieldsInstance.tokenize((err, payload) => {
 			if (err) {
 				console.log('instance.tokenize');
@@ -55,12 +55,26 @@ class IndexComponent extends React.Component {
 				return;
 			}
 
-			console.log('nonce', payload.nonce, payload);
+			fetch('http://localhost:3001/checkout', {
+				method: 'POST',
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ paymentMethodNonce: payload.nonce})
+			}).then(result => result.json()).then(json => {
+				if (json.success) {
+					console.log('GREAT SUCCESS', json);
+				} else {
+					console.log('result', json);
+				}
+			}).catch(error => {
+				console.log('checkout error', error);
+			});
 		});
 	}
 
-	static async getInitialProps(stuff) {
-		console.log('gIP', stuff);
+	static async getInitialProps() {
 		const tokenResponse = await fetch('http://localhost:3001/token');
 		const token = await tokenResponse.text();
 
@@ -68,8 +82,6 @@ class IndexComponent extends React.Component {
 	}
 
 	componentDidMount() {
-		console.log('state', this.state);
-		console.log('props', this.props);
 		client.create({
 			authorization: 'sandbox_n2npx3xs_pkz3mj2rrtx56jh2'
 		}).then((instance) => {
@@ -189,6 +201,4 @@ class IndexComponent extends React.Component {
 	}
 }
 
-const Index = () => (<IndexComponent />);
-
-export default Index;
+export default IndexComponent;
